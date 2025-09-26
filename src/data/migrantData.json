@@ -1,0 +1,142 @@
+{
+  "personal_information": {
+    "first_name": "Krishna",
+    "last_name": "Kalakonda", 
+    "middle_name": "",
+    "date_of_birth": "15-April-2000",
+    "age": 25,
+    "gender": "Male",
+    "nationality": "Indian",
+    "ethnicity": "Asian",
+    "race": "Asian",
+    "marital_status": "Married",
+    "religion": "Hindu",
+    "preferred_language": "English",
+    "languages_spoken": ["English", "Hindi", "Telugu"],
+    "email": "krishnakalakonda123@gmail.com",
+    "phone_number": "+15555555555",
+    "current_address": {
+      "street": "2449 N Clybourn Ave",
+      "city": "Chicago",
+      "state": "IL",
+      "zip_code": "60614",
+      "duration_at_current_address": "1 years"
+    },
+    "country_of_origin": "India",
+    "date_of_entry": "01-January-2023",
+    "point_of_entry": "Chicago O'Hare International Airport",
+    "has_work_permit": true,
+    "passport_number": "A12345678",
+    "visa_type": "H1B",
+    "visa_number": "V12345678",
+    "visa_expiration_date": "31-December-2027",
+    "social_security_number": "123-45-6789"
+  },
+  "dependents_information": {
+    "total_family_members": 2,
+    "details": [
+      {
+        "relationship": "Spouse",
+        "age": 24,
+        "first_name": "Nami",
+        "last_name": "Kalakonda",
+        "legal_status": "Dependent"
+      },
+      {
+        "relationship": "Daughter",
+        "age": 1,
+        "first_name": "Hina",
+        "last_name": "Kalakonda",
+        "legal_status": "Dependent"
+      }
+    ]
+  },
+  "employment": {
+    "need_assistance": true,
+    "current_status": "Employed",
+    "current_job_title": "Data Scientist",
+    "employment_skills": ["Python", "Machine Learning", "Data Analysist", "SQL", "R", "Tableau", "Power BI", "Excel", "Statistics", "Data Visualization", "Big Data", "Data Cleaning", "Data Mining", "Predictive Modeling", "Deep Learning", "NLP", "Time Series Analysis", "Data Warehousing", "ML, AI", "Hadoop", "Spark", "Cloud Computing"],
+    "preferred_job_role_titles": ["Senior Data Scientist", "Data Science Manager", "Machine Learning Engineer"],
+    "job_preferences": ["Remote", "Full-time"],
+    "available_work_hours": "Full-time",
+    "minimum_wage_expectation": "150,000 USD per year",
+    "relocation_availability": false,
+    "employment_history": [
+      {
+        "job_title": "Associate Data Scientist",
+        "responsibilities": ["Data Analysis", "Model Development", "Reporting"]
+      },
+      {
+        "job_title": "Research Assistant",
+        "responsibilities": ["Data Gathering", "Statistical Analysis", "Report Writing"]
+      },
+      {
+        "job_title": "Data Scientist",
+        "responsibilities": ["Data Preprocessing", "Model Training", "Performance Evaluation"]
+      }
+    ]
+  },
+  "housing": {
+    "need_assistance": true,
+    "current_status": "Renting",
+    "housing_preferences": ["Apartment", "2 Bedrooms", "Pet-friendly", "Near Public Transport"],
+    "ability_to_pay_rent": true,
+    "current_rent_amount": "$2000",
+    "maximum_rent_affordability": "$2500",
+    "number_of_household_members": 3,
+    "pets": true
+  },
+  "education": {
+    "need_assistance": false,
+    "qualification": "Master's Degree",
+    "field_of_study": "Data Science",
+    "certificates_obtained": ["Certified Data Scientist", "AWS Certified Machine Learning - Specialty"],
+    "education_in_usa": true,
+    "literacy_level": "Advanced",
+    "education_requirements": [],
+    "english_proficiency": "Fluent",
+    "areas_of_study_interest": [],
+    "children": {
+      "children_in_school": null,
+      "children_education_assistance_needed": false
+    }
+  },
+  "health": {
+    "disability_status": null,
+    "disability_type": ""
+  },
+  "transportation": {
+    "access_to_transportation": "Public Transport"
+  },
+  "financial": {
+    "has_bank_account": false,
+    "interested_in_digital_wallets": false,
+    "financial_education_needed": false
+  },
+  "legal_aid": {
+    "has_legal_representation": false,
+    "needs_legal_aid": true,
+    "legal_topics_of_concern": []
+  },
+  "technology_access": {
+    "has_smartphone": true,
+    "computer_access": true,
+    "internet_access": true
+  },
+  "support_networks": {
+    "affiliated_organizations": [],
+    "social_support_networks": [],
+    "trusted_community_members": []
+  },
+  "childcare": {
+    "child_care_needed": false,
+    "childcare_preferences": []
+  },
+  "emergency_contact": {
+    "name": "Nami Kalakonda",
+    "relationship": "Spouse",
+    "phone_number": "123-456-7890",
+    "email": "nami.kalakonda@example.com"
+  },
+  "documents_processed": ["Passport", "Visa", "Social Security Card", "Work Permit", "Driver's License"]
+}
