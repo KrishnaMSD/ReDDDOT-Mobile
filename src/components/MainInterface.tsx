@@ -48,7 +48,7 @@ export function MainInterface({
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col bg-background h-full overflow-hidden">
       {currentView === 'home' && (
         <ChatInterface
           language={language}

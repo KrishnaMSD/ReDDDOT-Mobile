@@ -515,8 +515,8 @@ export function ChatInterface({
 
   return (
     <div className="flex-1 flex flex-col h-full">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b bg-card">
+      {/* Fixed Header */}
+      <div className="flex items-center justify-between p-4 border-b bg-card sticky top-0 z-50">
         <Button
           variant="ghost"
           size="sm"
@@ -538,10 +538,10 @@ export function ChatInterface({
         />
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-hidden">
+      {/* Messages Container */}
+      <div className="flex-1 overflow-hidden relative">
         <ScrollArea className="h-full">
-          <div className="p-4 space-y-4 pb-4">
+          <div className="p-4 space-y-4 pb-20">
             {messages.map((message) => (
               <div key={message.id}>
                 {renderMessage(message)}
@@ -556,7 +556,7 @@ export function ChatInterface({
 
       {/* File Upload Display */}
       {uploadedFile && (
-        <div className="px-4 py-2 bg-accent/50 border-b">
+        <div className="px-4 py-2 bg-accent/50 border-t sticky bottom-16 z-40">
           <div className="flex items-center space-x-2 text-sm">
             <FileText className="w-4 h-4" />
             <span>Ready to upload: {uploadedFile.name}</span>
@@ -572,8 +572,8 @@ export function ChatInterface({
         </div>
       )}
 
-      {/* Input */}
-      <div className="p-4 border-t bg-card">
+      {/* Fixed Input */}
+      <div className="p-4 border-t bg-card sticky bottom-0 z-40">
         <div className="flex items-center space-x-2">
           <Button 
             variant="outline" 
