@@ -52,7 +52,7 @@ export function ChatInterface({
     {
       id: '1',
       type: 'bot',
-      content: "Hello I'm Navi, your AI assistant to help navigate your life in USA. Tell me about your self. What is your name?",
+      content: "Hello, I am Navi, your AI assistant. I will help you navigate our life in USA. Let me know a little bit about yourself. What is your name?",
       timestamp: new Date()
     }
   ]);
@@ -104,10 +104,10 @@ export function ChatInterface({
   const speakText = async (text: string) => {
     try {
       if (audioOption === 'local') {
-        // Try to use local audio files
+        // Try to use local audio files with exact text naming convention
         try {
-          const audioFileName = `${text.substring(0, 50).replace(/[^a-zA-Z0-9\s]/g, '').trim()}.wav`;
-          const audio = new Audio(`/audio/${audioFileName}`);
+          const audioFileName = `${text}.mp3`;
+          const audio = new Audio(`/src/audio/${audioFileName}`);
           await audio.play();
           return;
         } catch (error) {
@@ -204,19 +204,19 @@ export function ChatInterface({
     if (conversationState === 'initial') {
       const firstName = userMessage.trim().split(' ')[0];
       onProfileUpdate({ name: firstName });
-      addMessage("Hello Krishna, nice to meet you. Where are you from?", 'bot');
+      addMessage(`Hey ${firstName}, nice to meet you. Where are you from?`, 'bot');
       onConversationStateChange('personal-info');
     } else if (conversationState === 'personal-info') {
       if (!userProfile.country) {
         onProfileUpdate({ country: userMessage });
-        addMessage('When did you come to USA and what\'s your current visa status?', 'bot');
+        addMessage('May I know when you came to USA and your current visa status?', 'bot');
       } else if (!userProfile.visaStatus) {
         const parts = userMessage.split('.');
         onProfileUpdate({ 
           arrivalDate: parts[0]?.trim(),
           visaStatus: parts[1]?.trim() || userMessage
         });
-        addMessage('That\'s good to hear. May I know which of these services are you looking for today?', 'bot');
+        addMessage(`Good to hear that, ${userProfile.name}. Which of these services can I help you with today?`, 'bot');
         onConversationStateChange('service-selection');
       }
     } else if (conversationState === 'job-search') {
@@ -231,11 +231,11 @@ export function ChatInterface({
     
     if (service === 'Job Search') {
       setCurrentService('job');
-      addMessage('What kind of job are you looking for?', 'bot');
+      addMessage('I would be glad to help with your job search. What kind of job are you looking for?', 'bot');
       onConversationStateChange('job-search');
     } else if (service === 'Housing Search') {
       setCurrentService('housing');
-      addMessage('Let us find the best house for you together. May I know about the household members?', 'bot');
+      addMessage('Let\'s find the right home for you together. May I know who will be part of your household?', 'bot');
       onConversationStateChange('housing-search');
     }
   };
@@ -243,22 +243,23 @@ export function ChatInterface({
   const handleJobSearch = async (userMessage: string) => {
     if (!userProfile.jobType) {
       onProfileUpdate({ jobType: userMessage });
-      addMessage('Do you have any relevant skills or experience?', 'bot');
+      addMessage('Could you share the skills or experience you have that might help with this job?', 'bot');
     } else if (!userProfile.skills) {
       onProfileUpdate({ skills: userMessage });
-      addMessage('Which city or area would you prefer to work in?', 'bot');
+      addMessage('Thank you for sharing your resume. I will use it to find your skills and experience. Which city or area would you like to work in?', 'bot');
     } else if (!userProfile.preferredLocation) {
       onProfileUpdate({ preferredLocation: userMessage });
-      addMessage('Do you have any expectations from job like salary, transport or any benefits?', 'bot');
+      addMessage('Do you have specific expectations regarding salary, transportation or other benefits?', 'bot');
     } else if (!userProfile.salaryExpectation) {
       onProfileUpdate({ salaryExpectation: userMessage });
-      addMessage('Understood. Is there anything else you would like to add before I find suitable jobs for you?', 'bot');
+      addMessage('Great. Is there anything else you would like to mention before I search for suitable jobs?', 'bot');
     } else {
       setIsLoading(true);
-      addMessage('Please give me some time to search my knowledge base and find best recommended jobs for you.', 'bot');
+      addMessage('Please give me a moment while I check my knowledge base and find the best job recommendations for you.', 'bot');
       
       setTimeout(() => {
         setIsLoading(false);
+        addMessage(`Thanks for waiting, ${userProfile.name}. Here are some top job recommendations for you.`, 'bot');
         onConversationStateChange('results');
       }, 3000);
     }
@@ -266,33 +267,27 @@ export function ChatInterface({
 
   const handleHousingSearch = async (userMessage: string) => {
     if (!userProfile.householdInfo) {
-      const familyInfo = uploadedFile ? 
-        'Based on uploaded document: Spouse: Nami, Daughter: Hina (age 1)' : 
-        userMessage;
-      
       onProfileUpdate({ 
-        householdInfo: familyInfo,
-        spouse: 'Nami',
-        children: [{ name: 'Hina', age: 1 }]
+        householdInfo: userMessage,
       });
-      addMessage('Can you provide the neighbourhood and the city you would like to live in?', 'bot');
+      addMessage('Do you have any pets at home?', 'bot');
+    } else if (userProfile.hasPets === undefined) {
+      onProfileUpdate({ hasPets: userMessage.toLowerCase().includes('yes') });
+      addMessage('Please tell me the city and neighborhoods where you would like to find a new home.', 'bot');
     } else if (!userProfile.preferredLocation) {
       onProfileUpdate({ preferredLocation: userMessage });
-      addMessage('Do you have any pets?', 'bot');
-    } else if (userProfile.hasPets === undefined) {
-      onProfileUpdate({ hasPets: userMessage.toLowerCase() === 'yes' });
-      addMessage('What\'s your maximum rent budget?', 'bot');
+      addMessage('What\'s the maximum rent budget you have in mind.', 'bot');
     } else if (!userProfile.rentBudget) {
       onProfileUpdate({ rentBudget: userMessage });
-      addMessage('Any housing preferences you have?', 'bot');
+      addMessage('Do you have any particular requirements or preferences for your home?', 'bot');
     } else if (!userProfile.housingPreferences) {
       onProfileUpdate({ housingPreferences: userMessage });
       setIsLoading(true);
-      addMessage('Let me find the best matching housing for you.', 'bot');
+      addMessage('Great, let me use this information to find the right home for you.', 'bot');
       
       setTimeout(() => {
         setIsLoading(false);
-        setShowHousingApplications(true);
+        addMessage(`Hey ${userProfile.name}, here are the top matches for your new home preferences.`, 'bot');
         onConversationStateChange('results');
       }, 3000);
     }
@@ -448,7 +443,7 @@ export function ChatInterface({
       return <JobResults 
         userProfile={userProfile} 
         onJobSaved={() => {
-          addMessage('I have saved the job, Krishna. You will be able to find it in the job section in the menu.', 'bot');
+          addMessage(`I have saved the job, ${userProfile.name}. You will be able to find it in the job section in the menu.`, 'bot');
           addMessage('Would you like help with any other services today?', 'bot');
           onConversationStateChange('service-selection');
         }} 
