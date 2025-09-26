@@ -8,9 +8,10 @@ import { ApplicationForm } from './ApplicationForm';
 
 interface JobResultsProps {
   userProfile: UserProfile;
+  onJobSaved?: () => void;
 }
 
-export function JobResults({ userProfile }: JobResultsProps) {
+export function JobResults({ userProfile, onJobSaved }: JobResultsProps) {
   const [selectedJob, setSelectedJob] = useState<any>(null);
   const [showForm, setShowForm] = useState(false);
 
@@ -23,7 +24,8 @@ export function JobResults({ userProfile }: JobResultsProps) {
       salary: '$140,000 - $180,000',
       type: 'Full-time',
       description: 'Join our data science team to build innovative solutions...',
-      benefits: ['Health Insurance', 'Transportation', '401k']
+      benefits: ['Health Insurance', 'Transportation', '401k'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234567'
     },
     {
       id: 2,
@@ -33,7 +35,8 @@ export function JobResults({ userProfile }: JobResultsProps) {
       salary: '$160,000 - $200,000',
       type: 'Full-time',
       description: 'Lead a team of data scientists in cutting-edge projects...',
-      benefits: ['Health Insurance', 'Remote Work', 'Stock Options']
+      benefits: ['Health Insurance', 'Remote Work', 'Stock Options'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234568'
     },
     {
       id: 3,
@@ -43,7 +46,8 @@ export function JobResults({ userProfile }: JobResultsProps) {
       salary: '$135,000 - $175,000',
       type: 'Full-time',
       description: 'Work on machine learning models for healthcare...',
-      benefits: ['Health Insurance', 'Transportation', 'Flexible Hours']
+      benefits: ['Health Insurance', 'Transportation', 'Flexible Hours'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234569'
     },
     {
       id: 4,
@@ -53,7 +57,8 @@ export function JobResults({ userProfile }: JobResultsProps) {
       salary: '$170,000 - $220,000',
       type: 'Full-time',
       description: 'Manage data science initiatives across multiple projects...',
-      benefits: ['Health Insurance', 'Management Training', 'Bonus']
+      benefits: ['Health Insurance', 'Management Training', 'Bonus'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234570'
     },
     {
       id: 5,
@@ -63,7 +68,63 @@ export function JobResults({ userProfile }: JobResultsProps) {
       salary: '$120,000 - $160,000',
       type: 'Full-time',
       description: 'Analyze large datasets to drive business decisions...',
-      benefits: ['Health Insurance', 'Transportation', 'Learning Budget']
+      benefits: ['Health Insurance', 'Transportation', 'Learning Budget'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234571'
+    },
+    {
+      id: 6,
+      title: 'Machine Learning Engineer',
+      company: 'TechFlow Solutions',
+      location: 'Chicago, IL',
+      salary: '$145,000 - $185,000',
+      type: 'Full-time',
+      description: 'Build and deploy machine learning models at scale...',
+      benefits: ['Health Insurance', 'Flexible Schedule', 'Learning Budget'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234572'
+    },
+    {
+      id: 7,
+      title: 'Senior Analytics Specialist',
+      company: 'DataVision Corp',
+      location: 'Schaumburg, IL',
+      salary: '$125,000 - $165,000',
+      type: 'Full-time',
+      description: 'Drive data-driven decision making across organization...',
+      benefits: ['Health Insurance', 'Remote Work', '401k Match'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234573'
+    },
+    {
+      id: 8,
+      title: 'AI Research Scientist',
+      company: 'InnovateLabs',
+      location: 'Chicago, IL',
+      salary: '$155,000 - $195,000',
+      type: 'Full-time',
+      description: 'Research and develop next-generation AI algorithms...',
+      benefits: ['Health Insurance', 'Research Budget', 'Publications Support'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234574'
+    },
+    {
+      id: 9,
+      title: 'Business Intelligence Analyst',
+      company: 'MetroCorp',
+      location: 'Chicago, IL',
+      salary: '$95,000 - $135,000',
+      type: 'Full-time',
+      description: 'Create dashboards and reports to support business decisions...',
+      benefits: ['Health Insurance', 'Training Budget', 'Hybrid Work'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234575'
+    },
+    {
+      id: 10,
+      title: 'Data Platform Engineer',
+      company: 'CloudTech Systems',
+      location: 'Chicago, IL',
+      salary: '$130,000 - $170,000',
+      type: 'Full-time',
+      description: 'Build and maintain large-scale data infrastructure...',
+      benefits: ['Health Insurance', 'Stock Options', 'Professional Development'],
+      linkedinUrl: 'https://linkedin.com/jobs/view/3801234576'
     }
   ];
 
@@ -78,6 +139,12 @@ export function JobResults({ userProfile }: JobResultsProps) {
         job={selectedJob}
         userProfile={userProfile}
         onBack={() => setShowForm(false)}
+        onSaveAndContinue={() => {
+          setShowForm(false);
+          if (onJobSaved) {
+            onJobSaved();
+          }
+        }}
       />
     );
   }
@@ -132,14 +199,24 @@ export function JobResults({ userProfile }: JobResultsProps) {
                   )}
                 </div>
                 
-                <Button
-                  size="sm"
-                  onClick={() => handleJobSelect(job)}
-                  className="w-full text-xs"
-                >
-                  View Details & Apply
-                  <ExternalLink className="w-3 h-3 ml-1" />
-                </Button>
+                <div className="flex space-x-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => window.open(job.linkedinUrl, '_blank')}
+                    className="flex-1 text-xs"
+                  >
+                    Apply here
+                    <ExternalLink className="w-3 h-3 ml-1" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => handleJobSelect(job)}
+                    className="flex-1 text-xs"
+                  >
+                    View Details & Apply
+                  </Button>
+                </div>
               </div>
             </Card>
           ))}

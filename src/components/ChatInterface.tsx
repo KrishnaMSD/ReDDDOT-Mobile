@@ -445,7 +445,14 @@ export function ChatInterface({
     }
 
     if (conversationState === 'results' && currentService === 'job') {
-      return <JobResults userProfile={userProfile} />;
+      return <JobResults 
+        userProfile={userProfile} 
+        onJobSaved={() => {
+          addMessage('I have saved the job, Krishna. You will be able to find it in the job section in the menu.', 'bot');
+          addMessage('Would you like help with any other services today?', 'bot');
+          onConversationStateChange('service-selection');
+        }} 
+      />;
     }
 
     if (conversationState === 'results' && currentService === 'housing' && !showHousingApplications) {

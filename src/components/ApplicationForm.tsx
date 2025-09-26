@@ -8,9 +8,10 @@ interface ApplicationFormProps {
   job: any;
   userProfile: UserProfile;
   onBack: () => void;
+  onSaveAndContinue?: () => void;
 }
 
-export function ApplicationForm({ job, userProfile, onBack }: ApplicationFormProps) {
+export function ApplicationForm({ job, userProfile, onBack, onSaveAndContinue }: ApplicationFormProps) {
   const [isAutofilling, setIsAutofilling] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -30,7 +31,11 @@ export function ApplicationForm({ job, userProfile, onBack }: ApplicationFormPro
     // Save the current state and continue
     setTimeout(() => {
       setIsSaved(false);
-      onBack(); // Return to previous screen
+      if (onSaveAndContinue) {
+        onSaveAndContinue();
+      } else {
+        onBack(); // Fallback to previous behavior
+      }
     }, 1000);
   };
 
