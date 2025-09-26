@@ -103,11 +103,12 @@ interface FormData {
 }
 
 interface HousingApplicationFormProps {
-  application: HousingApplication;
+  housing: any;
+  userProfile: any;
   onBack: () => void;
 }
 
-export function HousingApplicationForm({ application, onBack }: HousingApplicationFormProps) {
+export function HousingApplicationForm({ housing, userProfile, onBack }: HousingApplicationFormProps) {
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     middleName: '',
@@ -202,16 +203,16 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
         </head>
         <body>
           <div class="header">
-            <h1>${application.managementName}</h1>
+            <h1>${housing.managementName}</h1>
             <h2>Rental Application</h2>
           </div>
           
           <div class="section">
             <div class="section-title">Apartment/Unit Details</div>
-            <div class="field"><span class="field-label">Address:</span> ${application.address}</div>
-            <div class="field"><span class="field-label">Unit Name:</span> ${application.unitName}</div>
-            <div class="field"><span class="field-label">Rental Amount:</span> $${application.rent}/month</div>
-            <div class="field"><span class="field-label">Rent Due Date:</span> ${application.rentDueDate}</div>
+            <div class="field"><span class="field-label">Address:</span> ${housing.address}</div>
+            <div class="field"><span class="field-label">Unit Name:</span> ${housing.unitName}</div>
+            <div class="field"><span class="field-label">Rental Amount:</span> $${housing.rent}/month</div>
+            <div class="field"><span class="field-label">Rent Due Date:</span> ${housing.rentDueDate}</div>
           </div>
 
           <div class="section">
@@ -266,7 +267,7 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${application.managementName.replace(/\s+/g, '_')}_Application.html`;
+    a.download = `${housing.managementName.replace(/\s+/g, '_')}_Application.html`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -307,7 +308,7 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
         {/* Management Header */}
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">{application.managementName}</CardTitle>
+            <CardTitle className="text-xl">{housing.managementName}</CardTitle>
             <p className="text-muted-foreground">Rental Application Form</p>
           </CardHeader>
         </Card>
@@ -319,10 +320,10 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-1 gap-3 p-3 bg-muted rounded-lg">
-              <p><strong>Address:</strong> {application.address}</p>
-              <p><strong>Unit Name:</strong> {application.unitName}</p>
-              <p><strong>Rental Amount:</strong> ${application.rent}/month</p>
-              <p><strong>Rent Due Date:</strong> {application.rentDueDate}</p>
+              <p><strong>Address:</strong> {housing.address}</p>
+              <p><strong>Unit Name:</strong> {housing.unitName}</p>
+              <p><strong>Rental Amount:</strong> ${housing.rent}/month</p>
+              <p><strong>Rent Due Date:</strong> {housing.rentDueDate}</p>
             </div>
           </CardContent>
         </Card>

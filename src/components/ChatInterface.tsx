@@ -456,7 +456,14 @@ export function ChatInterface({
     }
 
     if (conversationState === 'results' && currentService === 'housing' && !showHousingApplications) {
-      return <HousingResults userProfile={userProfile} />;
+      return <HousingResults 
+        userProfile={userProfile} 
+        onHousingSaved={() => {
+          addMessage('Great! I have saved your housing preference. You can find it in the housing section.', 'bot');
+          addMessage('Would you like help with any other services today?', 'bot');
+          onConversationStateChange('service-selection');
+        }}
+      />;
     }
 
     if (showHousingApplications) {
