@@ -103,11 +103,12 @@ interface FormData {
 }
 
 interface HousingApplicationFormProps {
-  application: HousingApplication;
+  housing: any;
+  userProfile: any;
   onBack: () => void;
 }
 
-export function HousingApplicationForm({ application, onBack }: HousingApplicationFormProps) {
+export function HousingApplicationForm({ housing, userProfile, onBack }: HousingApplicationFormProps) {
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     middleName: '',
@@ -130,6 +131,11 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
 
   const [showAutofillButton, setShowAutofillButton] = useState(true);
   const [isAutofilled, setIsAutofilled] = useState(false);
+
+  // Auto-fill on component mount (since user clicked "Yes")
+  useEffect(() => {
+    handleAutofill();
+  }, []);
 
   const handleAutofill = () => {
     const data = migrantData.personal_information;
@@ -185,65 +191,203 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
   };
 
   const handleDownload = () => {
-    // Create HTML content for PDF generation
+    // Create HTML content for PDF generation with better formatting
     const htmlContent = `
+      <!DOCTYPE html>
       <html>
         <head>
           <title>Housing Rental Application</title>
+          <meta charset="utf-8">
           <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            .header { text-align: center; margin-bottom: 30px; }
-            .section { margin-bottom: 25px; }
-            .section-title { background-color: #f0f0f0; padding: 8px; margin-bottom: 15px; font-weight: bold; }
-            .field { margin-bottom: 10px; }
-            .field-label { font-weight: bold; margin-right: 10px; }
-            .family-member { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+            body { 
+              font-family: Arial, sans-serif; 
+              margin: 30px; 
+              line-height: 1.6;
+              color: #333;
+            }
+            .header { 
+              text-align: center; 
+              margin-bottom: 40px;
+              border-bottom: 2px solid #333;
+              padding-bottom: 20px;
+            }
+            .section { 
+              margin-bottom: 30px; 
+              page-break-inside: avoid;
+            }
+            .section-title { 
+              background-color: #f5f5f5; 
+              padding: 12px; 
+              margin-bottom: 15px; 
+              font-weight: bold; 
+              font-size: 16px;
+              border-left: 4px solid #007bff;
+            }
+            .field { 
+              margin-bottom: 12px; 
+              display: flex;
+              justify-content: space-between;
+              border-bottom: 1px solid #eee;
+              padding-bottom: 8px;
+            }
+            .field-label { 
+              font-weight: bold; 
+              min-width: 150px;
+              color: #555;
+            }
+            .field-value {
+              flex: 1;
+              text-align: right;
+            }
+            .family-member { 
+              border: 1px solid #ddd; 
+              padding: 15px; 
+              margin-bottom: 15px; 
+              border-radius: 5px;
+              background-color: #fafafa;
+            }
+            .two-column {
+              display: flex;
+              justify-content: space-between;
+              gap: 20px;
+            }
+            .column {
+              flex: 1;
+            }
+            .signature-section {
+              border: 1px solid #333;
+              padding: 20px;
+              margin-top: 30px;
+            }
+            .declaration {
+              font-style: italic;
+              margin-bottom: 20px;
+              padding: 15px;
+              background-color: #f9f9f9;
+              border-radius: 5px;
+            }
+            @media print {
+              .section { page-break-inside: avoid; }
+            }
           </style>
         </head>
         <body>
           <div class="header">
-            <h1>${application.managementName}</h1>
-            <h2>Rental Application</h2>
+            <h1>${housing.managementName}</h1>
+            <h2>Rental Application Form</h2>
+            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
           </div>
           
           <div class="section">
             <div class="section-title">Apartment/Unit Details</div>
-            <div class="field"><span class="field-label">Address:</span> ${application.address}</div>
-            <div class="field"><span class="field-label">Unit Name:</span> ${application.unitName}</div>
-            <div class="field"><span class="field-label">Rental Amount:</span> $${application.rent}/month</div>
-            <div class="field"><span class="field-label">Rent Due Date:</span> ${application.rentDueDate}</div>
+            <div class="field">
+              <span class="field-label">Address:</span> 
+              <span class="field-value">${housing.address}</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Unit Name:</span> 
+              <span class="field-value">${housing.unitName}</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Rental Amount:</span> 
+              <span class="field-value">$${housing.rent}/month</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Rent Due Date:</span> 
+              <span class="field-value">${housing.rentDueDate}</span>
+            </div>
           </div>
 
           <div class="section">
             <div class="section-title">Applicant Details</div>
-            <div class="field"><span class="field-label">First Name:</span> ${formData.firstName}</div>
-            <div class="field"><span class="field-label">Middle Name:</span> ${formData.middleName}</div>
-            <div class="field"><span class="field-label">Last Name:</span> ${formData.lastName}</div>
-            <div class="field"><span class="field-label">Age:</span> ${formData.age}</div>
-            <div class="field"><span class="field-label">Gender:</span> ${formData.gender}</div>
-            <div class="field"><span class="field-label">Marital Status:</span> ${formData.maritalStatus}</div>
-            <div class="field"><span class="field-label">Passport Number:</span> ${formData.passportNumber}</div>
+            <div class="two-column">
+              <div class="column">
+                <div class="field">
+                  <span class="field-label">First Name:</span> 
+                  <span class="field-value">${formData.firstName}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Middle Name:</span> 
+                  <span class="field-value">${formData.middleName}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Last Name:</span> 
+                  <span class="field-value">${formData.lastName}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Age:</span> 
+                  <span class="field-value">${formData.age}</span>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <span class="field-label">Gender:</span> 
+                  <span class="field-value">${formData.gender}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Marital Status:</span> 
+                  <span class="field-value">${formData.maritalStatus}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Passport Number:</span> 
+                  <span class="field-value">${formData.passportNumber}</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="section">
             <div class="section-title">Contact Details</div>
-            <div class="field"><span class="field-label">Email:</span> ${formData.email}</div>
-            <div class="field"><span class="field-label">Mobile Number:</span> ${formData.mobileNumber}</div>
-            <div class="field"><span class="field-label">Current Address:</span> ${formData.currentAddress}</div>
+            <div class="field">
+              <span class="field-label">Email Address:</span> 
+              <span class="field-value">${formData.email}</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Mobile Number:</span> 
+              <span class="field-value">${formData.mobileNumber}</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Current Address:</span> 
+              <span class="field-value">${formData.currentAddress}</span>
+            </div>
           </div>
 
           <div class="section">
             <div class="section-title">Family Details</div>
             ${formData.familyMembers.map((member, index) => 
-              member.firstName ? `
+              member.firstName || member.lastName ? `
                 <div class="family-member">
                   <h4>Family Member ${index + 1}</h4>
-                  <div class="field"><span class="field-label">First Name:</span> ${member.firstName}</div>
-                  <div class="field"><span class="field-label">Middle Name:</span> ${member.middleName}</div>
-                  <div class="field"><span class="field-label">Last Name:</span> ${member.lastName}</div>
-                  <div class="field"><span class="field-label">Age:</span> ${member.age}</div>
-                  <div class="field"><span class="field-label">Gender:</span> ${member.gender}</div>
-                  <div class="field"><span class="field-label">Relationship:</span> ${member.relationship}</div>
+                  <div class="two-column">
+                    <div class="column">
+                      <div class="field">
+                        <span class="field-label">First Name:</span> 
+                        <span class="field-value">${member.firstName}</span>
+                      </div>
+                      <div class="field">
+                        <span class="field-label">Middle Name:</span> 
+                        <span class="field-value">${member.middleName}</span>
+                      </div>
+                      <div class="field">
+                        <span class="field-label">Last Name:</span> 
+                        <span class="field-value">${member.lastName}</span>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <span class="field-label">Age:</span> 
+                        <span class="field-value">${member.age}</span>
+                      </div>
+                      <div class="field">
+                        <span class="field-label">Gender:</span> 
+                        <span class="field-value">${member.gender}</span>
+                      </div>
+                      <div class="field">
+                        <span class="field-label">Relationship:</span> 
+                        <span class="field-value">${member.relationship}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ` : ''
             ).join('')}
@@ -251,24 +395,51 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
 
           <div class="section">
             <div class="section-title">Declaration</div>
-            <p>I, ${formData.firstName} ${formData.lastName}, hereby declare that all the above information is true to my knowledge. I hereby give authority to the management to pull my credit history and verify the information provided.</p>
-          </div>
-
-          <div class="section">
-            <div class="field"><span class="field-label">Signature:</span> ${formData.signature}</div>
-            <div class="field"><span class="field-label">Date:</span> ${formData.date}</div>
+            <div class="declaration">
+              <p>I, <strong>${formData.firstName} ${formData.lastName}</strong>, hereby declare that all the above information is true to my knowledge. I hereby give authority to the management to pull my credit history and verify the information provided.</p>
+            </div>
+            <div class="signature-section">
+              <div class="two-column">
+                <div class="column">
+                  <div class="field">
+                    <span class="field-label">Signature:</span> 
+                    <span class="field-value"><strong>${formData.signature}</strong></span>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <span class="field-label">Date:</span> 
+                    <span class="field-value">${formData.date}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </body>
       </html>
     `;
 
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${application.managementName.replace(/\s+/g, '_')}_Application.html`;
-    a.click();
-    URL.revokeObjectURL(url);
+    // Create a new window/tab with the content and trigger print
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      
+      // Wait for content to load, then print
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 1000);
+    } else {
+      // Fallback: create downloadable HTML file
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${housing.managementName.replace(/\s+/g, '_')}_Application.html`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -307,7 +478,7 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
         {/* Management Header */}
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">{application.managementName}</CardTitle>
+            <CardTitle className="text-xl">{housing.managementName}</CardTitle>
             <p className="text-muted-foreground">Rental Application Form</p>
           </CardHeader>
         </Card>
@@ -319,10 +490,10 @@ export function HousingApplicationForm({ application, onBack }: HousingApplicati
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-1 gap-3 p-3 bg-muted rounded-lg">
-              <p><strong>Address:</strong> {application.address}</p>
-              <p><strong>Unit Name:</strong> {application.unitName}</p>
-              <p><strong>Rental Amount:</strong> ${application.rent}/month</p>
-              <p><strong>Rent Due Date:</strong> {application.rentDueDate}</p>
+              <p><strong>Address:</strong> {housing.address}</p>
+              <p><strong>Unit Name:</strong> {housing.unitName}</p>
+              <p><strong>Rental Amount:</strong> ${housing.rent}/month</p>
+              <p><strong>Rent Due Date:</strong> {housing.rentDueDate}</p>
             </div>
           </CardContent>
         </Card>
